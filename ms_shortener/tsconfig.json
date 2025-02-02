@@ -1,0 +1,59 @@
+{
+    "compilerOptions": {
+        "importHelpers": true,
+        "module": "esnext",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "esnext",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "noImplicitAny": false,
+        "strict": true,
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "dist",
+        "baseUrl": "./src",
+        "forceConsistentCasingInFileNames": true,
+        "paths": {
+            "utils/*": [
+                "utils/*"
+            ],
+            "models/*": [
+                "models/*"
+            ],
+            "services/*": [
+                "services/*"
+            ],
+            "types/*": [
+                "types/*"
+            ],
+            "enums/*": [
+                "enums/*"
+            ],
+            "db/*": [
+                "db/*"
+            ],
+            "log/*": [
+                "log/*"
+            ],
+            "routes/*": [
+                "routes/*"
+            ],
+            "i18n/*": [
+                "i18n/*"
+            ]
+        },
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "types": [
+            "express",
+            "jest",
+            "node"
+        ]
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

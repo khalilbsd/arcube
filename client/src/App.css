@@ -1,0 +1,14 @@
+
+.app-wrapper {
+  min-height: 100vh;
+  background-color: var(--black);
+  color:var(--body-text);
+  padding:25px
+}
+
+.page-wrapper {
+  padding-top:20px;
+}
+
+
+

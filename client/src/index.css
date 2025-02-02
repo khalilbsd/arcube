@@ -1,0 +1,22 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+:root{
+  --black: #100919;
+  --body-text: #d2cadb;
+  --white: white;
+  --primary: #a107ea;
+  --secondary-dark: #5000b5;
+}
+
+body {
+  margin: 0;
+  font-family:Noto , sans-serif;
+}
+
+
+*{
+  box-sizing: border-box;
+}
+

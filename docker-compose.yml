@@ -1,0 +1,69 @@
+services:
+  frontend:
+    container_name: arcube_client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - ./client:/arcube/client
+    ports:
+      - "80:80"
+    command: npm run watch
+    restart: always
+    networks:
+      - arcube-network
+  mongodb:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./mongodb/mongo_data:/data/db
+      - ./mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    environment:
+      MONGO_INITDB_DATABASE: arcube
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 9Ai69A2tR9Hj
+      MONGO_ADMIN: arcube
+      MONGO_ADMIN_PASSWORD: Ug1gR81K9X9K
+    networks:
+      - arcube-network
+  mongo-express:
+    image: mongo-express:latest
+    restart: always
+    ports:
+      - "27018:8081"
+    environment:
+        ME_CONFIG_MONGODB_ADMINUSERNAME: root
+        ME_CONFIG_MONGODB_ADMINPASSWORD: 9Ai69A2tR9Hj
+        ME_CONFIG_MONGODB_URL: mongodb://root:9Ai69A2tR9Hj@mongodb:27017/
+        ME_CONFIG_BASICAUTH: false
+    depends_on:
+      - mongodb
+    networks:
+      - arcube-network
+  ms_shortener:
+    build:
+      context: ./ms_shortener/.
+      dockerfile: Dockerfile
+    container_name: arcube_ms_shortner
+    ports:
+      - 5000:5000
+    command: npm run watch
+    restart: always
+    depends_on:
+      - mongodb
+    environment:
+        DB_MONGODB_HOST: mongodb
+        DB_MONGODB_PORT: 27017
+        DB_USERNAME: root
+        DB_PASSWORD: 9Ai69A2tR9Hj
+        DB_MONGODB_NAME: arcube
+        PORT: 5000
+    volumes:
+      - ./ms_shortener:/arcube/service
+    networks:
+      - arcube-network
+networks:
+  arcube-network:
+    driver: bridge
+

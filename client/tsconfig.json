@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    /* Basic Options */
+    "target": "es6",                               // Modern ECMAScript version (ES6).
+    "module": "esnext",                            // Use the ESNext module system for tree shaking.
+    "lib": ["dom", "dom.iterable", "esnext"],      // Include DOM libraries and latest ES features.
+    "jsx": "react-jsx",                            // React 18 new JSX transform (no need for `import React`).
+
+    /* Strict Type-Checking Options */
+    "strict": true,                                // Enable all strict type-checking options.
+    "strictNullChecks": true,                      // Ensure proper handling of `null` and `undefined`.
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,                 // Prevent `any` type from being implied.
+    /* Module Resolution Options */
+    "moduleResolution": "node",                    // Node-style module resolution.
+    "esModuleInterop": true,                       // Allows mixing CommonJS and ES modules.
+    "forceConsistentCasingInFileNames": true,      // Enforce consistent file name casing across platforms.
+
+    /* Output Options */
+    "sourceMap": true,                             // Enable source maps for debugging.
+    "outDir": "./dist",                            // Output compiled files to `dist` folder.
+    "rootDir": "./src",                            // Root directory for your source files.
+
+    /* Additional Checks */
+    "skipLibCheck": true,                          // Speed up compilation by skipping type checks for libraries.
+    "noUnusedLocals": true,                        // Warn if local variables are declared but not used.
+    "noUnusedParameters": true,                    // Warn if function parameters are not used.
+    "noImplicitReturns": true,                     // Ensure that all code paths in a function return a value.
+    "noFallthroughCasesInSwitch": true,            // Ensure no `case` falls through in `switch` statements.
+
+    /* Path Aliases (Optional) */
+    "baseUrl": "./src",                            // Base directory for non-relative module names.
+    "paths": {
+      "components/*": ["components/*"],           // Shortcut to `components/` folder.
+      "pages/*": ["pages/*"],           // Shortcut to `components/` folder.
+      "utils/*": ["utils/*"],
+      "types/*": ["types/*"],
+      "hooks/*": ["hooks/*"],
+      "services/*": ["services/*"],
+      "store/*": ["store/*"],
+      "routes/*": ["routes/*"],
+      "assets/*": ["assets/*"],
+    }
+  },
+  "include": ["src/**/*"],                              // Include the `src` folder in the project.
+  "exclude": ["node_modules", "dist"]              // Exclude `node_modules` and `dist` from compilation.
+}
