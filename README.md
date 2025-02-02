@@ -14,7 +14,99 @@
 ## Introduction
 This project consists of a frontend application built with React and TypeScript, and a backend application built with Node.js and TypeScript. The project uses Docker for containerization and MongoDB for data storage. the idea is that it's an application that shorten out urls and offers the generation of a Qr code and a custom paths.
 ## requirements
-you need to  have at least `nodeJs 20.X`
+you need to  have at least `nodeJs 20.X` and  `docker compose v2.29.X`
+
+## Project architecture
+
+This project consists of multiple services that work together to provide a URL shortening application. The architecture is defined using Docker Compose, which allows for easy orchestration and management of the services.
+
+## Services
+
+### 1. Frontend
+
+- **Container Name:** `arcube_client`
+- **Build Context:** `./client`
+- **Dockerfile:** `Dockerfile` |  `Dockerfile.prod` for the the production environment
+- **Volumes:**
+  - `./client:/arcube/client`
+- **Ports:**
+  - `80:80`
+- **Command:** `npm run watch` for development environment otherwise nginx will be used as the webserver
+- **Restart Policy:** `always`
+- **Networks:**
+  - `arcube-network`
+
+The frontend service is responsible for serving the client-side application with `React ts`. It uses a Dockerfile to build the application and maps the local `./client` directory to the container. The service runs on port 80 and restarts automatically if it fails.
+
+### 2. MongoDB
+
+- **Image:** `mongo:latest`
+- **Ports:**
+  - `27017:27017`
+- **Volumes:**
+  - `./mongodb/mongo_data:/data/db`
+  - `./mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js`
+- **Environment Variables:**
+  - `MONGO_INITDB_DATABASE: arcube`
+  - `MONGO_INITDB_ROOT_USERNAME: root_user`
+  - `MONGO_INITDB_ROOT_PASSWORD: root_password`
+  - `MONGO_ADMIN: database_user`
+  - `MONGO_ADMIN_PASSWORD: database_user_password`
+- **Networks:**
+  - `arcube-network`
+
+The MongoDB service provides the database for the application. It uses the latest MongoDB image and maps the local `./mongodb/mongo_data` directory to the container for data persistence. The service is configured with environment variables for the initial database setup and credentials.
+
+### 3. Mongo Express
+
+- **Image:** `mongo-express:latest`
+- **Ports:**
+  - `27018:8081`
+- **Environment Variables:**
+  - `ME_CONFIG_MONGODB_ADMINUSERNAME: root_user`
+  - `ME_CONFIG_MONGODB_ADMINPASSWORD: root_password`
+  - `ME_CONFIG_MONGODB_URL: mongodb://root_user:root_password@mongodb:27017/`
+  - `ME_CONFIG_BASICAUTH: false`
+- **Depends On:**
+  - `mongodb`
+- **Restart Policy:** `always`
+- **Networks:**
+  - `arcube-network`
+
+Mongo Express is a web-based MongoDB admin interface. It connects to the MongoDB service using the provided credentials and runs on port 27018. The service depends on MongoDB and restarts automatically if it fails.
+
+### 4. URL Shortener Microservice
+
+- **Container Name:** `arcube_ms_shortner`
+- **Build Context:** `./ms_shortener/.`
+- **Dockerfile:** `Dockerfile`
+- **Ports:**
+  - `5000:5000`
+- **Command:** `npm run watch`
+- **Restart Policy:** `always`
+- **Depends On:**
+  - `mongodb`
+- **Environment Variables:**
+  - `DB_MONGODB_HOST: mongodb`
+  - `DB_MONGODB_PORT: 27017`
+  - `DB_USERNAME: root_user`
+  - `DB_PASSWORD: root_password`
+  - `DB_MONGODB_NAME: arcube`
+  - `PORT: 5000`
+- **Volumes:**
+  - `./ms_shortener:/arcube/service`
+- **Networks:**
+  - `arcube-network`
+
+The URL Shortener Microservice handles the URL shortening logic. It builds the service from the `./ms_shortener` directory and runs on port 5000. The service depends on MongoDB and is configured with environment variables for database connection.
+
+## Networks
+
+- **arcube-network:**
+  - **Driver:** `bridge`
+
+All services are connected through the `arcube-network`, which uses the bridge driver to enable communication between containers.
+
 
 ## Project Structure
 
@@ -125,6 +217,7 @@ vim docker-compose.yml
 ```
 run the  application
 ```bash
+docker compose up  mongodb -d
 docker compose up -d
 ```
 
@@ -135,5 +228,155 @@ vim docker-compose-prod.yml
 ```
 run the  application
 ```bash
-docker compose up -d
+docker compose -f docker-compose-prod mongodb  up -d
+docker compose -f docker-compose-prod  up -d
 ```
+### Testing
+to launch the backend tests  you simply run :
+```bash
+docker exec -it arcube_ms_shortner bash
+npm run test
+```
+
+## API Documentation
+### 1. Get Original URL
+
+**Endpoint:** `/api/v0/:shortenedID`
+
+**Method:** `GET`
+
+**Description:** Retrieves the original URL corresponding to the given shortened ID.
+
+**Request Parameters:**
+- `shortenedID` (path parameter): The ID of the shortened URL.
+
+**Response:**
+- **Success (200):**
+  ```json
+  {
+    "success": true,
+    "message": "Original URL retrieved successfully",
+    "originalUrl": "http://example.com"
+  }
+  ```
+  **Error (404):**
+  ```json
+
+  {
+    "status": "fail",
+    "message": "Invalid URL format",
+    "error": {
+        "name": "ArCubeAppError",
+        "code": 400,
+        "status": "fail",
+        "message": "Invalid URL format",
+        "statusCode": 400
+    }
+  }
+  ```
+  **Error (500):**
+  ```json
+  {
+    "status": "fail",
+    "message": "we are sorry but something went please try again later",
+    "error": {
+        "name": "ArCubeAppError",
+        "code": 400,
+        "status": "fail",
+        "message": "Invalid URL format",
+        "statusCode": 400
+    }
+  }
+  ```
+
+### 2. Shorten URL
+
+**Endpoint:** `/api/v0/shorten`
+
+**Method:** `POST`
+
+**Description:** Shortens a given URL, with an optional custom alias.
+
+**Request Body:**
+- `url` (required): The original URL to be shortened.
+- `customUrl` (optional): A custom alias for the shortened URL.
+
+**Response:**
+- **Success (200):**
+  ```json
+  {
+    "success": true,
+    "message": "your shortened url is ready to use",
+    "shortenedUrl": "the id of the shortened url"
+  }
+- **Error (400):**
+  ```json
+  {
+    "status": "fail",
+    "message": "Invalid custom path. the path must not be an url",
+    "error": {
+        "name": "ArCubeAppError",
+        "code": 400,
+        "status": "fail",
+        "message": "Invalid URL format",
+        "statusCode": 400
+    }
+  }
+  ```
+  ```json
+  {
+    "status": "fail",
+    "message": "Invalid custom path. the path must not be an url",
+    "error": {
+        "name": "ArCubeAppError",
+        "code": 400,
+        "status": "fail",
+        "message": "Invalid URL format",
+        "statusCode": 400
+    }
+  }
+  ```
+  ```json
+  {
+    "status": "fail",
+    "message": "The custom url is already used",
+    "error": {
+        "name": "ArCubeAppError",
+        "code": 400,
+        "status": "fail",
+        "message": "Invalid URL format",
+        "statusCode": 400
+    }
+  }
+  ```
+  ```json
+  {
+    "success": true,
+    "status": "fail",
+    "message": "URL is missing from the request",
+    "error": {
+        "name": "ArCubeAppError",
+        "code": 400,
+        "status": "fail",
+        "message": "Invalid URL format",
+        "statusCode": 400
+    }
+  }
+  ```
+- **Error (500):**
+
+  ```json
+  {
+    "success": true,
+    "status": "fail",
+    "message": "we are sorry but something went wrong please try again later",
+    "error": {
+        "name": "ArCubeAppError",
+        "code": 500,
+        "status": "fail",
+        "message": "Invalid URL format",
+        "statusCode": 500
+    }
+  }
+  ```
+
