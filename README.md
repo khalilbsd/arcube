@@ -202,6 +202,17 @@ Inside the `src` folder, you'll find these directories and files:
 
 
 #### Installation
+install docker and nodejs
+docker : https://docs.docker.com/engine/install/ubuntu/
+nodejs :
+```bash
+sudo apt update
+cd ~
+curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
+sudo bash /tmp/nodesource_setup.sh
+sudo apt install nodejs
+
+```
 clone the folder
 ```bash
    git clone  https://github.com/khalilbsd/arcube.git
