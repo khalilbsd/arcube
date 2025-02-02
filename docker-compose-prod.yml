@@ -19,10 +19,10 @@ services:
       - ./mongodb/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     environment:
       MONGO_INITDB_DATABASE: arcube
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: 9Ai69A2tR9Hj
-      MONGO_ADMIN: arcube
-      MONGO_ADMIN_PASSWORD: Ug1gR81K9X9K
+      MONGO_INITDB_root_user_USERNAME: root_user
+      MONGO_INITDB_root_user_PASSWORD: root_password
+      MONGO_ADMIN: database_user
+      MONGO_ADMIN_PASSWORD: database_user
     networks:
       - arcube-network
   mongo-express:
@@ -31,9 +31,9 @@ services:
     ports:
       - "27018:8081"
     environment:
-        ME_CONFIG_MONGODB_ADMINUSERNAME: root
-        ME_CONFIG_MONGODB_ADMINPASSWORD: 9Ai69A2tR9Hj
-        ME_CONFIG_MONGODB_URL: mongodb://root:9Ai69A2tR9Hj@mongodb:27017/
+        ME_CONFIG_MONGODB_ADMINUSERNAME: root_user
+        ME_CONFIG_MONGODB_ADMINPASSWORD: root_password
+        ME_CONFIG_MONGODB_URL: mongodb://root_user:root_password@mongodb:27017/
         ME_CONFIG_BASICAUTH: false
     depends_on:
       - mongodb
@@ -53,8 +53,8 @@ services:
     environment:
         DB_MONGODB_HOST: mongodb
         DB_MONGODB_PORT: 27017
-        DB_USERNAME: root
-        DB_PASSWORD: 9Ai69A2tR9Hj
+        DB_USERNAME: root_user
+        DB_PASSWORD: root_password
         DB_MONGODB_NAME: arcube
         PORT: 5000
     networks:
