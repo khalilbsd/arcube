@@ -2,4 +2,4 @@
 
 # dependencies
 /node_modules
-/mongodb
+/mongodb/mongo_data
