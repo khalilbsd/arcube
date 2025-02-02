@@ -3,3 +3,4 @@
 # dependencies
 /node_modules
 /mongodb/mongo_data
+docker-compose*

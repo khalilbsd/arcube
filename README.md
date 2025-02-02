@@ -211,7 +211,9 @@ clone the folder
   cd client && npm i
   cd ms_shortener && npm i
   ```
-you need to configure the  database variables in docker-compose.yml
+if you find the need to declare a local dns you can edit the file `client/.env.local` to alter the variables `REACT_APP_SERVER_URL` and `REACT_APP_DOMAIN` accordingly.
+you need to configure the  database variables in docker-compose.
+
 ```bash
 vim docker-compose.yml
 ```
