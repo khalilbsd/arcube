@@ -1,0 +1,116 @@
+# Project Overview
+
+## Table of Contents
+- Introduction
+- Project Structure
+  - Root Directory
+  - Client Directory
+  - ms_shortener Directory
+- Setup and Installation
+- Running the Project
+- Contributing
+- License
+
+## Introduction
+This project consists of a frontend application built with React and TypeScript, and a backend application built with Node.js and TypeScript. The project uses Docker for containerization and MongoDB for data storage. the idea is that it's an application that shorten out urls and offers the generation of a Qr code and a custom paths.
+
+## Project Structure
+
+### Root Directory
+- **docker-compose.yml**: Configuration for Docker Compose to manage multi-container Docker applications in development.
+- **docker-compose-prod.yml**: Configuration for Docker Compose to manage multi-container Docker applications in production.
+- **mongodb/**: Directory containing MongoDB initialization scripts and data storage.
+
+### Client Directory
+This directory contains the frontend code for your project, built with React and TypeScript.
+
+- **Dockerfile**: Dockerfile for building the frontend development environment.
+- **Dockerfile.prod**: Dockerfile for building the frontend production environment.
+- **nginx.conf**: Nginx configuration file for serving the frontend.
+- **package.json**: NPM configuration file listing dependencies and scripts.
+- **public/**: Directory for static assets like HTML, icons, and manifest files.
+- **src/**: Directory for source code,
+- **tsconfig.json**: TypeScript configuration file.
+
+Inside the `src` folder, you'll find these folders:
+
+- **components**: The components folder.
+- **enums**: The enums folder that contains various enumerations.
+- **hooks**: The folder of custom hooks.
+- **index.tsx**: The main entry point of the application.
+- **pages**: The folder that contains the root pages, such as the home page and redirect page.
+- **services**: The list of services that are available, including API calls.
+- **store**: The Redux Toolkit store that contains the declaration of reducers and the APIs.
+  - **api**: The actual declaration of the APIs.
+  - **reducer**: The reducer declaration.
+- **types**: The folder that contains application types.
+- **utils**: The folder that contains extra functionalities that are crucial to the system but don't belong to any specific theme to be a service.
+
+### ms_shortener Directory
+This directory contains the backend code for your project, built with Node.js and TypeScript.
+- **Dockerfile**: Dockerfile for building the backend development environment.
+- **Dockerfile.prod**: Dockerfile for building the backend production environment.
+- **jest.config.ts**: Configuration file for the Jest testing framework.
+- **log/**: Directory for log files.
+- **package.json**: NPM configuration file listing dependencies and scripts.
+- **src/**: Directory for source code, including configuration, controllers, database connections, error handling, internationalization, middleware, models, routes, services, and utilities.
+
+Inside the `src` folder, you'll find these directories and files:
+
+- **config**: Contains configuration files for the application.
+  - **environment.config.ts**: Configuration for different environments (e.g., development, production).
+
+- **controller**: Contains controller files that handle incoming requests and return responses.
+  - **url.controller.ts**: Controller for URL-related operations.
+
+- **db**: Contains database connection and configuration files.
+  - **db_mongo.ts**: MongoDB configuration and connection setup.
+
+- **errors**: Contains files for error handling.
+  - **appError.ts**: Custom application error class.
+  - **errorHandler.ts**: Middleware for handling errors.
+  - **Error.ts**: General error handling utilities.
+  - **http.ts**: HTTP-specific error handling.
+
+- **i18n**: Contains internationalization files.
+  - **messages.eng.ts**: English messages for internationalization.
+
+- **index.ts**: The main entry point of the backend application.
+
+- **log**: Contains logging configuration files.
+  - **config.ts**: Configuration for logging.
+
+- **middleware**: Contains middleware functions.
+  - **errors.ts**: Middleware for handling errors.
+
+- **models**: Contains database models.
+  - **urls.model.ts**: Model for URL data.
+
+- **routes**: Contains route definitions.
+  - **url.route.ts**: Routes for URL-related operations.
+
+- **services**: Contains service files that implement business logic.
+  - **url.service.ts**: Service for URL-related operations.
+  - **url.service.test.ts**: Tests for the URL service.
+
+- **types**: Contains TypeScript type definitions.
+  - **IDayjs.interface.ts**: Types for Day.js.
+  - **IService.interface.ts**: Types for services.
+  - **IUrl.interface.ts**: Types for URLs.
+
+- **utils**: Contains utility functions that are crucial to the system but don't belong to any specific theme.
+  - **catchAsync.ts**: Utility function for catching async errors.
+  - **dayjs.ts**: Utility functions for Day.js.
+
+
+
+- **tsconfig.json**: TypeScript configuration file.
+
+
+#### Installation
+clone the folder
+```bash
+   git clone  https://github.com/khalilbsd/arcube.git
+   cd arcube
+
+
