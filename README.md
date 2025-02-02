@@ -13,6 +13,8 @@
 
 ## Introduction
 This project consists of a frontend application built with React and TypeScript, and a backend application built with Node.js and TypeScript. The project uses Docker for containerization and MongoDB for data storage. the idea is that it's an application that shorten out urls and offers the generation of a Qr code and a custom paths.
+## requirements
+you need to  have at least `nodeJs 20.X`
 
 ## Project Structure
 
@@ -111,6 +113,27 @@ Inside the `src` folder, you'll find these directories and files:
 clone the folder
 ```bash
    git clone  https://github.com/khalilbsd/arcube.git
-   cd arcube
+   ```
+##### development mode
+  ```bash
+  cd client && npm i
+  cd ms_shortener && npm i
+  ```
+you need to configure the  database variables in docker-compose.yml
+```bash
+vim docker-compose.yml
+```
+run the  application
+```bash
+docker compose up -d
+```
 
-
+##### production mode
+you need to configure the  database variables in docker-compose-prod.yml
+```bash
+vim docker-compose-prod.yml
+```
+run the  application
+```bash
+docker compose up -d
+```
