@@ -14,8 +14,8 @@
 ## Introduction
 This project consists of a frontend application built with React and TypeScript, and a backend application built with Node.js and TypeScript. The project uses Docker for containerization and MongoDB for data storage. the idea is that it's an application that shorten out urls and offers the generation of a Qr code and a custom paths.
 ## requirements
-you need to  have at least `nodeJs 20.X` and  `docker compose v2.29.X`
-
+you need to  have at least  `docker compose v2.29.X` you don't need node js  because of the containerization however if you desire you must have at least
+node js 20.X
 ## Project architecture
 
 This project consists of multiple services that work together to provide a URL shortening application. The architecture is defined using Docker Compose, which allows for easy orchestration and management of the services.
@@ -204,7 +204,7 @@ Inside the `src` folder, you'll find these directories and files:
 #### Installation
 install docker and nodejs
 docker : https://docs.docker.com/engine/install/ubuntu/
-nodejs :
+nodejs (optional) :
 ```bash
 sudo apt update
 cd ~
